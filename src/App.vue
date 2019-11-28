@@ -1,27 +1,26 @@
 <template lang="pug">
-  div(id="app")
-    header
+div
+  .header-container
+    div nihao
+  div
     router-view
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
-
 <script>
-import Header from './components/Header'
+import appHeader from './components/Header.vue'
 
 export default {
   name: 'App',
   components: {
-    Header
+    appHeader
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.header-container {
+  z-index:9 !important;
+  background: red;
+  height: 50px;
+}
+</style>
