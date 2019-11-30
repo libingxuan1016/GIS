@@ -10,7 +10,7 @@ div
 </template>
 
 <script>
-import BMap from 'BMap'
+import { MP } from '../assets/build-map'
 require('echarts/extension/bmap/bmap')
 export default {
   data () {
@@ -23,9 +23,19 @@ export default {
     }
   },
   mounted () {
-    this.mapHeight = document.documentElement.clientHeight - 60 + 'px'
-    this.chartsHeight = document.documentElement.clientHeight - 60 - 40 + 'px'
-    this.drawLine()
+    this.$nextTick(() => {
+      MP('Xx8OKfayCncHTB0irzONqPCfhwP2g6A4').then(BMap => {
+        this.mapHeight = document.documentElement.clientHeight - 60 + 'px'
+        this.chartsHeight = document.documentElement.clientHeight - 60 - 40 + 'px'
+        this.$nextTick(() => {
+          this.drawLine()
+        })
+        window.addEventListener('resize', () => {
+          this.$echarts.init(document.getElementById('myChart')).resize()
+        })
+      })
+    })
+    // this.drawLine()
   },
   methods: {
     drawLine () {
@@ -34,13 +44,7 @@ export default {
       var data = [
         {name: '海门', value: 9},
         {name: '鄂尔多斯', value: 12},
-        {name: '招远', value: 12},
-        {name: '舟山', value: 12},
-        {name: '齐齐哈尔', value: 14},
-        {name: '盐城', value: 15},
-        {name: '赤峰', value: 16},
-        {name: '青岛', value: 18},
-        {name: '乳山', value: 18}
+        {name: '招远', value: 12}
       ]
       var geoCoordMap = {
         '海门': [121.15, 31.89],
@@ -73,7 +77,7 @@ export default {
           trigger: 'item'
         },
         bmap: {
-          center: [115.114129, 55.550339],
+          center: [115.114129, 37.550339],
           zoom: 5,
           roam: true,
           mapStyle: {
@@ -87,7 +91,7 @@ export default {
             coordinateSystem: 'bmap',
             data: convertData(data),
             symbolSize: function (val) {
-              return val[2] / 10;
+              return val[2]
             },
             label: {
               normal: {
@@ -101,7 +105,7 @@ export default {
             },
             itemStyle: {
               normal: {
-                color: 'purple'
+                color: '#888'
               }
             }
           },
@@ -113,7 +117,7 @@ export default {
               return b.value - a.value
             }).slice(0, 6)),
             symbolSize: function (val) {
-              return val[2] / 10
+              return val[2]
             },
             showEffectOn: 'render',
             rippleEffect: {
@@ -129,7 +133,7 @@ export default {
             },
             itemStyle: {
               normal: {
-                color: 'purple',
+                color: '#888',
                 shadowBlur: 10,
                 shadowColor: '#333'
               }
