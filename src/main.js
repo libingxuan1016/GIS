@@ -1,4 +1,3 @@
-import '../static/GlobalStyle.css'
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
@@ -7,6 +6,8 @@ import router from './router'
 import BaiduMap from 'vue-baidu-map'
 import echarts from 'echarts'
 import 'echarts/theme/wonderland.js'
+import normalize from 'normalize.css'
+Vue.use(normalize)
 Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
