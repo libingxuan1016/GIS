@@ -1,7 +1,6 @@
 <template lang="pug">
 div
-  .header-container
-    div nihao
+  app-header
   div
     router-view
 </template>
@@ -17,10 +16,5 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.header-container {
-  z-index:9 !important;
-  background: red;
-  height: 50px;
-}
+<style lang="scss">
 </style>

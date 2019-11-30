@@ -1,0 +1,8 @@
+*,::after, ::before {
+  font-family: "Montserrat", "Avenir Next","Avenir","Segoe UI","Hiragino Sans GB","Hiragino Sans GB W3","PingFang SC","Microsoft Yahei","SimHei",sans-serif;
+  box-sizing: inherit;
+}
+body {
+  margin: 0 !important;
+  font-size: 14px;
+}
