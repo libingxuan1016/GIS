@@ -7,7 +7,6 @@ import router from './router'
 import BaiduMap from 'vue-baidu-map'
 import echarts from 'echarts'
 import 'echarts/theme/wonderland.js'
-
 Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false

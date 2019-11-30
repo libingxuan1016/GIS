@@ -17,7 +17,7 @@ li {
 .header-container {
   position:relative;
   z-index: 9;
-  background-color:#fff;
+  background-color:rgb(17, 17, 17);
   box-shadow: 0 5px 20px rgba(37, 36, 36, 0.664);
   width: 100%;
   height: 60px;
