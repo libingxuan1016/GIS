@@ -26,6 +26,9 @@ export default {
     }
   },
   mounted () {
+    this.$axios.post('http://172.20.10.3/gisPro/public/api/airYear', {
+      airYear: '2016'
+    })
     this.mapHeight = document.documentElement.clientHeight - 60 + 'px'
     this.chartsHeight = document.documentElement.clientHeight - 60 - 40 + 'px'
     this.$nextTick(() => {

@@ -7,6 +7,8 @@ import BaiduMap from 'vue-baidu-map'
 import echarts from 'echarts'
 import 'echarts/theme/wonderland.js'
 import normalize from 'normalize.css'
+import axios from 'axios'
+Vue.prototype.$axios = axios
 Vue.use(normalize)
 Vue.prototype.$echarts = echarts
 
