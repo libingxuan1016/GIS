@@ -13,6 +13,8 @@ Vue.use(normalize)
 Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.baseURL = 'http://172.23.231.190/gisPro/public/api'
 
 Vue.use(BaiduMap, {
   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
