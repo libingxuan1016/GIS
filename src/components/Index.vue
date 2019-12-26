@@ -1,8 +1,8 @@
 <style lang="scss" scoped>
 * {
-  -webkit-box-sizing:  border-box;
-     -moz-box-sizing:  border-box;
-	      box-sizing:  border-box;
+-webkit-box-sizing:  border-box;
+-moz-box-sizing:  border-box;
+box-sizing:  border-box;
 }
 @mixin card {
   background: rgba(22, 22, 22, 0.815);
@@ -58,6 +58,10 @@ option{
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 2px;
+}
+.checkbutton:active,.checkbutton:visited {
+  outline:none;
+  border:none;
 }
 </style>
 <template lang="pug">
@@ -116,14 +120,19 @@ export default {
         style: 'dark'
       },
       soption: k,
-      type: '空气质量',
+      type: '地震',
       index: '',
       e_month: '1',
       e_year: '2014',
       year: ['2014', '2015', '2016', '2017', '2018', '2019'],
       month: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
       rank: ['1', '2', '3', '4', '5', '6', '7', '8'],
-      erank: '1'
+      erank: '1',
+      mapcenter: [110.114129, 35],
+      location: '',
+      locationData: [],
+      option: {},
+      show: false
     }
   },
   watch: {
@@ -136,6 +145,14 @@ export default {
       // else this.soption = t
 
       // this.drawLine(this.index)
+    },
+    option: {
+      deep: true,
+      handler: function (newValue, old) {
+        var myChart = this.$echarts.init(document.getElementById('myChart'), 'wonderland')
+        if (newValue) myChart.setOption(newValue, true)
+        else myChart.setOption(old.true)
+      }
     }
   },
   mounted () {
@@ -165,39 +182,12 @@ export default {
       var myChart = this.$echarts.init(document.getElementById('myChart'), 'wonderland')
       var option = null
       // data按照这个格式获取，value改为空气质量指标，每次该空气质量指标时从后台获取全部数据，存到data变量即可
-      var data = [
-        {year: '2014', month: '1', name: '海门', value: 9},
-        {year: '2014', month: '5', name: '鄂尔多斯', value: 12},
-        {year: '2015', month: '2', name: '招远', value: 19},
-        {year: '2014', month: '2', name: '天津', value: 300, myId: 5},
-        {year: '2016', month: '2', name: '北京', value: 40},
-        {year: '2016', month: '2', name: '济南', value: 12},
-        {year: '2017', month: '2', name: '上海', value: 42},
-        {year: '2017', month: '2', name: '成都', value: 10},
-        {year: '2017', month: '2', name: '长沙', value: 46},
-        {year: '2017', month: '2', name: '南京', value: 70},
-        {year: '2017', month: '2', name: '哈尔滨', value: 50},
-        {year: '2017', month: '3', name: '北京', value: 120},
-        {year: '2017', month: '2', name: '北京', value: 250},
-        {year: '2017', month: '3', name: '上海', value: 42},
-        {year: '2017', month: '3', name: '成都', value: 30},
-        {year: '2017', month: '3', name: '长沙', value: 200},
-        {year: '2017', month: '3', name: '南京', value: 75},
-        {year: '2017', month: '3', name: '哈尔滨', value: 90},
-        {year: '2017', month: '4', name: '北京', value: 40},
-        {year: '2017', month: '4', name: '上海', value: 121},
-        {year: '2017', month: '4', name: '成都', value: 80},
-        {year: '2017', month: '4', name: '长沙', value: 150},
-        {year: '2017', month: '4', name: '南京', value: 90},
-        {year: '2017', month: '4', name: '哈尔滨', value: 220},
-        {year: '2017', month: '4', name: '北京', value: 99}
-      ]
-      this.$axios.post(`/air`, {
+      var data = []
+      this.$http.post(`/air`, {
         type: 'air',
         index: a
       }).then((res) => {
         data = res.data
-        console.log(data)
         var geoCoordMap = {// 城市位置
           '海门': [121.15, 31.89],
           '鄂尔多斯': [109.781327, 39.608266],
@@ -490,9 +480,9 @@ export default {
                 '2019-1', '2019-2', '2019-3', '2019-4', '2019-5', '2019-6', '2019-7', '2019-8', '2019-9', '2019-10']
             },
             bmap: {
-              center: [115.114129, 37.550339],
+              center: this.mapcenter,
               zoom: 5,
-              roam: false,
+              roam: true,
               mapStyle: {
                 style: 'dark'
               }
@@ -504,10 +494,28 @@ export default {
         for (var n = 0; n < 70; n++) {
         // option.baseOption.timeline.data.push(data.timeline[n]);
           option.options.push({
-            title: {
-              text: '全国主要城市空气质量  ' + option.baseOption.timeline.data[n].split('-')[0] + '年' + option.baseOption.timeline.data[n].split('-')[1] + '月',
-              left: 'center'
-            },
+            title: [
+              {
+                text: '全国主要城市空气质量  ' + option.baseOption.timeline.data[n].split('-')[0] + '年' + option.baseOption.timeline.data[n].split('-')[1] + '月',
+                left: '48%',
+                top: '4%',
+                textAlign: 'center',
+                textStyle: {
+                  color: '#fff'
+                }
+              },
+              {
+                text: this.index + ' TOP 5(' + option.baseOption.timeline.data[n].split('-')[0] + '年' + option.baseOption.timeline.data[n].split('-')[1] + '月)',
+                left: '85%',
+                top: '45%',
+                textAlign: 'center',
+                textStyle: {
+                  color: '#fff',
+                  fontWeight: '200'
+                }
+              }
+
+            ],
             tooltip: {
               trigger: 'item',
               paramformatter: function (params) {
@@ -551,8 +559,8 @@ export default {
               }
             },
             grid: {
-              left: '72%', // 与容器左侧的距离
-              // right: '10%', // 与容器右侧的距离
+              left: '75%', // 与容器左侧的距离
+              right: '5%', // 与容器右侧的距离
               // top: '5%',   // 与容器顶部的距离
               bottom: '60%' // 与容器底部的距离
             },
@@ -623,30 +631,52 @@ export default {
         }
       })
     },
-    epoint (params) {
-      this.$axios.post(`/ethqkLoc`, {
-        type: '地震',
-        location: params.data.name[0] + params.data.name[1]
-      }).then((res) => {
-        console.log(res)
-      })
-    },
+
     earthquake () {
       var myChart = this.$echarts.init(document.getElementById('myChart'), 'wonderland')
-      var option = null
       var data = []
+      var that = this
       myChart.on('click', function (params) {
-        console.log(params.data.name[0] + params.data.name[1])
-        this.epoint(params)
+        that.loaction = params.data.name[0] + params.data.name[1]
+        that.$http.post(`/ethqkLoc`, {
+          type: 'earthquake',
+          location: params.data.name[0] + params.data.name[1]
+        }).then((res) => {
+          that.locationData = res.data
+          that.show = true
+          that.start()
+        })
       })
-      this.$axios.post(`/earthquake`, {
+      this.$http.post(`/earthquake`, {
         type: 'earthquake',
         year: this.e_year,
         month: this.e_month,
         erank: this.erank
       }).then((res) => {
         data = res.data
-        console.log(data)
+        var getDate = function (data) {
+          var res = []
+          for (var i = 0; i < data.length; i++) {
+            var a = data[i].year + '/' + data[i].month + '/' + data[i].day + ' ' + data[i].start_time
+            res.push(a)
+          }
+          return res
+        }
+        var getName = function (data) {
+          var res = []
+          for (var i = 0; i < data.length; i++) {
+            res.push(data[i].位置)
+          }
+          return res
+        }
+
+        var getValue = function (data) {
+          var res = []
+          for (var i = 0; i < data.length; i++) {
+            res.push(data[i].erank)
+          }
+          return res
+        }
         var convertData = function (data) {
           var res = []
           for (var i = 0; i < data.length; i++) {
@@ -664,11 +694,38 @@ export default {
           }
           return res
         }
-        option = {
-          title: {
-            text: '全国地震灾害记录',
-            left: 'center'
-          },
+        that.option = {
+          title: [
+            {
+              text: '全国地震灾害记录-' + this.erank + '级以上',
+              left: '48%',
+              top: '4%',
+              textAlign: 'center',
+              textStyle: {
+                color: '#fff'
+              }
+            },
+            {
+              text: '全国地震灾害记录-TOP 5(' + that.e_year + '年' + that.e_month + '月)',
+              left: '83%',
+              top: '2%',
+              textAlign: 'center',
+              textStyle: {
+                color: '#fff',
+                fontWeight: '200'
+              }
+            },
+            {
+              text: that.loaction + '地区地震灾害记录',
+              left: '81%',
+              top: '54%',
+              textAlign: 'center',
+              textStyle: {
+                color: '#fff',
+                fontWeight: '200'
+              },
+              show: that.show
+            }],
           tooltip: {
             trigger: 'item',
             formatter: function (params) {
@@ -683,12 +740,182 @@ export default {
           bmap: {
             center: [115.114129, 37.550339],
             zoom: 5,
-            roam: false,
+            roam: true,
             mapStyle: {
               style: 'dark'
             }
           },
+          dataZoom: [
+            {
+              show: that.show,
+              realtime: true,
+              start: 80,
+              end: 100,
+              xAxisIndex: 1,
+              left: '75%', // 与容器左侧的距离
+              right: '5%', // 与容器右侧的距离
+              top: '86%', // 与容器顶部的距离
+              bottom: '9%', // 与容器底部的距离,
+              textStyle: {
+                color: '#fff'
+              }
+            }
+          ],
+          grid: [
+            {
+              left: '75%', // 与容器左侧的距离
+              right: '5%', // 与容器右侧的距离
+              top: '8%', // 与容器顶部的距离
+              bottom: '65%' // 与容器底部的距离
+            },
+            {
+              show: that.show,
+              left: '75%', // 与容器左侧的距离
+              right: '5%', // 与容器右侧的距离
+              top: '62%', // 与容器顶部的距离
+              bottom: '20%' // 与容器底部的距离
+            } ],
+          xAxis: [
+            {
+              gridIndex: 0,
+              type: 'category',
+              data: getName(data).sort(function (a, b) {
+                return b.value - a.value
+              }).slice(0, 5),
+              splitLine: {show: false}, // 去除网格线
+              axisLine: {
+                lineStyle: {
+                  type: 'solid',
+                  color: '#fff', // 左边线的颜色
+                  width: '2'// 坐标线的宽度
+                }
+              },
+              axisLabel: {
+                formatter: function (params) {
+                  var newParamsName = ''// 最终拼接成的字符串
+                  var paramsNameNumber = params.length// 实际标签的个数
+                  var provideNumber = 3// 每行能显示的字的个数
+                  var rowNumber = Math.ceil(paramsNameNumber / provideNumber)// 换行的话，需要显示几行，向上取整
+                  /**
+                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+                             */
+                  // 条件等同于rowNumber>1
+                  if (paramsNameNumber > provideNumber) {
+                  /** 循环每一行,p表示行 */
+                    for (var p = 0; p < rowNumber; p++) {
+                      var tempStr = ''// 表示每一次截取的字符串
+                      var start = p * provideNumber// 开始截取的位置
+                      var end = start + provideNumber// 结束截取的位置
+                      // 此处特殊处理最后一行的索引值
+                      if (p === rowNumber - 1) {
+                      // 最后一次不换行
+                        tempStr = params.substring(start, paramsNameNumber)
+                      } else {
+                      // 每一次拼接字符串并换行
+                        tempStr = params.substring(start, end) + '\n'
+                      }
+                      newParamsName += tempStr// 最终拼成的字符串
+                    }
+                  } else {
+                  // 将旧标签的值赋给新标签
+                    newParamsName = params
+                  }
+                  // 将最终的字符串返回
+                  return newParamsName
+                },
+                textStyle: {
+                  color: '#fff' // 坐标值得具体的颜色
+                }
+              },
+              nameLocation: 'end' // 坐标轴名称显示位置。
+            },
+            {
+              gridIndex: 1,
+              type: 'category',
+              data: getDate(that.locationData).map(function (str) {
+                return str.replace(' ', '\n')
+              }),
+              axisLine: {
+                lineStyle: {
+                  type: 'solid',
+                  color: '#fff', // 左边线的颜色
+                  width: '2'// 坐标线的宽度
+                }
+              },
+              show: that.show
+            }],
+          yAxis: [
+            {
+              gridIndex: 0,
+              splitLine: {show: false}, // 去除网格线
+              type: 'value',
+              axisLine: {
+                lineStyle: {
+                  type: 'solid',
+                  color: '#fff', // 左边线的颜色
+                  width: '2'// 坐标线的宽度
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: '#fff' // 坐标值得具体的颜色
+                }
+              }
+            },
+            {
+              gridIndex: 1,
+              name: '震级',
+              type: 'value',
+              axisLine: {
+                lineStyle: {
+                  type: 'solid',
+                  color: '#fff', // 左边线的颜色
+                  width: '2'// 坐标线的宽度
+                }
+              },
+              show: that.show
+            }],
+
           series: [
+            {
+              name: '地震震级Top5',
+              data: getValue(data).sort(function (a, b) {
+                return b.value - a.value
+              }).slice(0, 5),
+              type: 'bar',
+              xAxisIndex: 0,
+              yAxisIndex: 0,
+              text: '全国地震灾害记录-TOP 5(' + that.e_year + '年' + that.e_month + '月)',
+              label: {
+                normal: {
+                  show: true
+                }
+              }
+            },
+            {
+              name: '震级',
+              type: 'line',
+              animation: false,
+              areaStyle: {
+                normal: {}
+              },
+              itemStyle: {
+                normal: {
+                  label: {
+                    show: true,
+                    color: '#fff'
+                  }
+                }
+              },
+              lineStyle: {
+                normal: {
+                  width: 1
+                }
+              },
+              data: getValue(that.locationData),
+              xAxisIndex: 1,
+              yAxisIndex: 1
+            },
             {
               name: this.index, // 这里需要改成选择的空气质量指标
               type: 'scatter',
@@ -739,24 +966,31 @@ export default {
             }
           ]
         }
-        if (option && typeof option === 'object') {
-          myChart.setOption(option, true)
+        console.log(that.option)
+        if (that.option && typeof that.option === 'object') {
+          myChart.setOption(that.option, true)
         }
       }
       )
     },
-
     typhon () {
       var myChart = this.$echarts.init(document.getElementById('myChart'), 'wonderland')
       var option = null
       var data = []
-      this.$axios.post(`/typhoon`, {
+      var chooseColor = function () {
+        var color = [ '#db5810',
+          '#e68206',
+          '#ffb248',
+          '#f5d101']
+        var a = Math.floor(Math.random() * (3 - 1 + 1) + 1)
+        return color[a]
+      }
+      this.$http.post(`/typhoon`, {
         type: 'typhoon',
         year: this.e_year,
         month: this.e_month
       }).then((res) => {
         data = res.data
-        console.log(data)
         var convertData = function (data) {
           var res = []
           var result = []
@@ -799,7 +1033,7 @@ export default {
             trigger: 'item'
           },
           bmap: {
-            center: [115.114129, 37.550339],
+            center: [120, 30],
             zoom: 5,
             roam: true,
             mapStyle: {
@@ -810,7 +1044,13 @@ export default {
             data: convertData(data),
             type: 'lines',
             coordinateSystem: 'bmap',
-            polyline: true
+            polyline: true,
+            lineStyle: {
+              normal: {
+                color: chooseColor(),
+                width: 2
+              }
+            }
           }
 
         }
