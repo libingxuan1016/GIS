@@ -120,7 +120,7 @@ export default {
         style: 'dark'
       },
       soption: k,
-      type: '地震',
+      type: '空气质量',
       index: '',
       e_month: '1',
       e_year: '2014',
@@ -159,14 +159,18 @@ export default {
     this.mapHeight = document.documentElement.clientHeight - 60 + 'px'
     this.chartsHeight = document.documentElement.clientHeight - 60 - 40 + 'px'
     this.index = this.soption[0].value
-    this.$nextTick(() => {
-      MP('Xx8OKfayCncHTB0irzONqPCfhwP2g6A4').then(BMap => {
-        this.$nextTick(() => {
-          this.start()
-        })
+    // this.$nextTick(() => {
+    //   MP('Xx8OKfayCncHTB0irzONqPCfhwP2g6A4').then(BMap => {
+    //     this.$nextTick(() => {
+    //       this.start()
+    //     })
+    //   })
+    // })
+    MP('Xx8OKfayCncHTB0irzONqPCfhwP2g6A4').then(BMap => {
+      this.$nextTick(() => {
+        this.start()
       })
     })
-    // this.drawLine()
   },
   methods: {
     start () {
@@ -482,7 +486,7 @@ export default {
             bmap: {
               center: this.mapcenter,
               zoom: 5,
-              roam: true,
+              roam: false,
               mapStyle: {
                 style: 'dark'
               }
@@ -740,7 +744,7 @@ export default {
           bmap: {
             center: [115.114129, 37.550339],
             zoom: 5,
-            roam: true,
+            roam: false,
             mapStyle: {
               style: 'dark'
             }
@@ -1027,7 +1031,12 @@ export default {
         option = {
           title: {
             text: '台风路径示意图',
-            left: 'center'
+            left: '48%',
+            top: '4%',
+            textAlign: 'center',
+            textStyle: {
+              color: '#fff'
+            }
           },
           tooltip: {
             trigger: 'item'
@@ -1035,7 +1044,7 @@ export default {
           bmap: {
             center: [120, 30],
             zoom: 5,
-            roam: true,
+            roam: false,
             mapStyle: {
               style: 'dark'
             }

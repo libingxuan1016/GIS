@@ -1,11 +1,12 @@
 <template lang="pug">
 .header-container
   img(src="../assets/title.png")
-  //- .title 自然灾害查询系统
-  //- li.link
-  //-   router-link(to="/", exact, tag="li") 功能1
-  //- li.link
-  //-   router-link(to="/", tag="li") 功能2
+  div.li
+    li.link
+      router-link(to="/", exact, tag="li") 灾害查询
+  div.li.li1
+    li.link
+      router-link(to="/path", tag="li") 出行路径
   //- li.link
   //-   router-link(to="/", tag="li") 功能3
 
@@ -21,7 +22,19 @@ img{
 li {
   list-style: none;
   display: inline-block;
-  color: white;
+  color: rgba(255, 255, 255, 0.808);
+}
+.li {
+    margin-left:20px;
+    display: inline-block;
+    position: absolute;
+    bottom:10px;
+}
+li:hover,li:visited{
+  color:'#fff';
+}
+.li1{
+  left:100px;
 }
 .title {
   display: inline-block;
