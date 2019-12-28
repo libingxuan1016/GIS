@@ -69,28 +69,28 @@ div
   .map(id="myChart",
     :style="{width:'100%',height:mapHeight}"
   )
-  .func-container
-    div
-      div.select-title 灾害类型
-      select.select(v-model="type")
-        option(value="空气质量") 空气质量
-        option(value ="地震") 地震
-        option(value="台风") 台风
-    div(v-if="this.type==='空气质量'")
-      div.select-title 空气质量指标
-      select.select(v-model="index")
-        option(v-for="(a,i) in soption", :value="a.value") {{a.name}}
-      button.checkbutton(@click="start") 查看
-    div(v-else)
-      div.select-title  日期
-      select.select(v-model="e_year")
-        option(v-for="(a,i) in year", :value="a") {{a}}年
-      select.select(v-model="e_month")
-        option(v-for="(a,i) in month", :value="a") {{a}}月
-      div.select-title(v-model="erank",v-if="this.type==='地震'") 震级
-      select.select(v-model="erank",v-if="this.type==='地震'")
-        option(v-for="(a,i) in rank", :value="a") {{a}}
-      button.checkbutton(@click="start") 查 看
+  //- .func-container
+  //-   div
+  //-     div.select-title 灾害类型
+  //-     select.select(v-model="type")
+  //-       option(value="空气质量") 空气质量
+  //-       option(value ="地震") 地震
+  //-       option(value="台风") 台风
+  //-   div(v-if="this.type==='空气质量'")
+  //-     div.select-title 空气质量指标
+  //-     select.select(v-model="index")
+  //-       option(v-for="(a,i) in soption", :value="a.value") {{a.name}}
+  //-     button.checkbutton(@click="start") 查看
+  //-   div(v-else)
+  //-     div.select-title  日期
+  //-     select.select(v-model="e_year")
+  //-       option(v-for="(a,i) in year", :value="a") {{a}}年
+  //-     select.select(v-model="e_month")
+  //-       option(v-for="(a,i) in month", :value="a") {{a}}月
+  //-     div.select-title(v-model="erank",v-if="this.type==='地震'") 震级
+  //-     select.select(v-model="erank",v-if="this.type==='地震'")
+  //-       option(v-for="(a,i) in rank", :value="a") {{a}}
+  //-     button.checkbutton(@click="start") 查 看
   //- .charts-container(:style="{height:chartsHeight}")
   //-   div(:style="{width: '400px', height:'300px'}")
 </template>
