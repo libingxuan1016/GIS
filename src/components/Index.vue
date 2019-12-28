@@ -152,15 +152,22 @@ export default {
       }
     }
   },
-  created () {
+  beforeCreate () {
+    window.window._bd_share_main = ''
+  },
+  mounted () {
     this.mapHeight = document.documentElement.clientHeight - 60 + 'px'
     this.chartsHeight = document.documentElement.clientHeight - 60 - 40 + 'px'
     this.index = this.soption[0].value
-    MP('Xx8OKfayCncHTB0irzONqPCfhwP2g6A4').then(BMap => {
-      this.$nextTick(() => {
-        this.start()
-      })
+    this.$nextTick(() => {
+      this.start()
     })
+    // MP('Xx8OKfayCncHTB0irzONqPCfhwP2g6A4').then(BMap => {
+    //   this.$nextTick(() => {
+    //     this.start()
+    //   })
+    // })
+    console.log(window)
   },
   methods: {
     start () {
@@ -960,7 +967,6 @@ export default {
             }
           ]
         }
-        console.log(that.option)
         if (that.option && typeof that.option === 'object') {
           myChart.setOption(that.option, true)
         }

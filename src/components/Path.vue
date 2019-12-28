@@ -79,15 +79,14 @@ export default {
       }
     }
   },
+  beforeCreate () {
+    window.window._bd_share_main = '1'
+  },
   mounted () {
     this.mapHeight = document.documentElement.clientHeight - 60 + 'px'
     this.chartsHeight = document.documentElement.clientHeight - 60 - 40 + 'px'
     this.$nextTick(() => {
-      MP('Xx8OKfayCncHTB0irzONqPCfhwP2g6A4').then(BMap => {
-        this.$nextTick(() => {
-          this.init()
-        })
-      })
+      this.init()
     })
     // this.drawLine()
   },
@@ -114,13 +113,11 @@ export default {
           return res
         }
         myChart.on('click', function (params) {
-          console.log(that.option.bmap.zoom)
           if (that.option.bmap.zoom === 5) {
             that.$http.post(`/showScene`, {
               name: params.data.namee
             }).then((res) => {
               let d = res.data
-              console.log(d)
               var c = function (data) {
                 var res = []
                 for (var i = 0; i < data.length; i++) {
