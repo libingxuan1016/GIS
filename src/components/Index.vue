@@ -58,6 +58,7 @@ option{
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 2px;
+  outline:none;
 }
 .checkbutton:active,.checkbutton:visited {
   outline:none;
@@ -69,28 +70,28 @@ div
   .map(id="myChart",
     :style="{width:'100%',height:mapHeight}"
   )
-  //- .func-container
-  //-   div
-  //-     div.select-title 灾害类型
-  //-     select.select(v-model="type")
-  //-       option(value="空气质量") 空气质量
-  //-       option(value ="地震") 地震
-  //-       option(value="台风") 台风
-  //-   div(v-if="this.type==='空气质量'")
-  //-     div.select-title 空气质量指标
-  //-     select.select(v-model="index")
-  //-       option(v-for="(a,i) in soption", :value="a.value") {{a.name}}
-  //-     button.checkbutton(@click="start") 查看
-  //-   div(v-else)
-  //-     div.select-title  日期
-  //-     select.select(v-model="e_year")
-  //-       option(v-for="(a,i) in year", :value="a") {{a}}年
-  //-     select.select(v-model="e_month")
-  //-       option(v-for="(a,i) in month", :value="a") {{a}}月
-  //-     div.select-title(v-model="erank",v-if="this.type==='地震'") 震级
-  //-     select.select(v-model="erank",v-if="this.type==='地震'")
-  //-       option(v-for="(a,i) in rank", :value="a") {{a}}
-  //-     button.checkbutton(@click="start") 查 看
+  .func-container
+    div
+      div.select-title 灾害类型
+      select.select(v-model="type")
+        option(value="空气质量") 空气质量
+        option(value ="地震") 地震
+        option(value="台风") 台风
+    div(v-if="this.type==='空气质量'")
+      div.select-title 空气质量指标
+      select.select(v-model="index")
+        option(v-for="(a,i) in soption", :value="a.value") {{a.name}}
+      button.checkbutton(@click="start") 查看
+    div(v-else)
+      div.select-title  日期
+      select.select(v-model="e_year")
+        option(v-for="(a,i) in year", :value="a") {{a}}年
+      select.select(v-model="e_month")
+        option(v-for="(a,i) in month", :value="a") {{a}}月
+      div.select-title(v-model="erank",v-if="this.type==='地震'") 震级
+      select.select(v-model="erank",v-if="this.type==='地震'")
+        option(v-for="(a,i) in rank", :value="a") {{a}}
+      button.checkbutton(@click="start") 查 看
   //- .charts-container(:style="{height:chartsHeight}")
   //-   div(:style="{width: '400px', height:'300px'}")
 </template>
@@ -141,10 +142,6 @@ export default {
         this.soption = k
         this.index = this.soption[0].value
       }
-      // else if (a === '地震') this.soption = d
-      // else this.soption = t
-
-      // this.drawLine(this.index)
     },
     option: {
       deep: true,
@@ -155,17 +152,10 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
     this.mapHeight = document.documentElement.clientHeight - 60 + 'px'
     this.chartsHeight = document.documentElement.clientHeight - 60 - 40 + 'px'
     this.index = this.soption[0].value
-    // this.$nextTick(() => {
-    //   MP('Xx8OKfayCncHTB0irzONqPCfhwP2g6A4').then(BMap => {
-    //     this.$nextTick(() => {
-    //       this.start()
-    //     })
-    //   })
-    // })
     MP('Xx8OKfayCncHTB0irzONqPCfhwP2g6A4').then(BMap => {
       this.$nextTick(() => {
         this.start()
@@ -500,12 +490,12 @@ export default {
           option.options.push({
             title: [
               {
-                text: '全国主要城市空气质量  ' + option.baseOption.timeline.data[n].split('-')[0] + '年' + option.baseOption.timeline.data[n].split('-')[1] + '月',
+                text: '全国主要城市' + this.index + option.baseOption.timeline.data[n].split('-')[0] + '年' + option.baseOption.timeline.data[n].split('-')[1] + '月',
                 left: '48%',
                 top: '4%',
                 textAlign: 'center',
                 textStyle: {
-                  color: '#fff'
+                  color: 'rgba(255, 255, 255, 0.808)'
                 }
               },
               {
@@ -706,7 +696,7 @@ export default {
               top: '4%',
               textAlign: 'center',
               textStyle: {
-                color: '#fff'
+                color: 'rgba(255, 255, 255, 0.808)'
               }
             },
             {
@@ -735,7 +725,7 @@ export default {
             formatter: function (params) {
               var htmlStr = '<div class="info"><p>' + params.data.name +
               '</p><p>震级:' + params.data.value[2] +
-              '</p><p>震源深度:' + params.data.depth +
+              '</p><p>震源深度:' + params.data.depth + '千米' +
               '</p><p>日期:' + params.data.year + '-' + params.data.month +
               '</p></div>'
               return htmlStr
@@ -1035,7 +1025,7 @@ export default {
             top: '4%',
             textAlign: 'center',
             textStyle: {
-              color: '#fff'
+              color: 'rgba(255, 255, 255, 0.808)'
             }
           },
           tooltip: {

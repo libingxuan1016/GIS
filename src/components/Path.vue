@@ -22,19 +22,21 @@ box-sizing:  border-box;
   @include card;
 }
 .checkbutton {
-  display: block;
-  background-color: rgb(97, 94, 94);
-  border: none;
-  color: white;
-  font-family:Arial;
-  padding: 10px 24px;
-  width: 240px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 18px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 2px;
+    display: block;
+    background-color: #615e5e;
+    border: none;
+    color: white;
+    font-family: Arial;
+    padding: 10px 24px;
+    width: 180px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 2px;
+    outline: none;
+    margin: 0;
 }
 .checkbutton:active,.checkbutton:visited {
   outline:none;
@@ -46,9 +48,9 @@ div
   .map(id="myChart",
     :style="{width:'100%',height:mapHeight}"
   )
-  .func-container
+  .func-container(v-if="isCity")
     div
-      button.checkbutton(@click="init") 返回
+      button.checkbutton(@click="init") 返回全国地图
 </template>
 
 <script>
@@ -62,7 +64,8 @@ export default {
       mapStyle: {
         style: 'dark'
       },
-      option: {}
+      option: {},
+      isCity: false
     }
   },
   watch: {
@@ -72,6 +75,7 @@ export default {
         var myChart = this.$echarts.init(document.getElementById('myChart'), 'wonderland')
         if (newValue) myChart.setOption(newValue, true)
         else myChart.setOption(old.true)
+        this.isCity = !(this.option.title.text === '点击热门城市，查看景点信息')
       }
     }
   },
@@ -135,12 +139,13 @@ export default {
               that.option = {
                 title:
             {
-              text: '点击您要查看的地点',
+              text: '鼠标移动到具体地点查看景点信息',
               left: '48%',
               top: '4%',
               textAlign: 'center',
               textStyle: {
-                color: '#fff'
+                color: 'rgba(255, 255, 255, 0.808)',
+                fontWeight: '200'
               }
             },
                 tooltip: {
@@ -191,12 +196,13 @@ export default {
         that.option = {
           title:
             {
-              text: '点击您要查看的地点',
+              text: '点击热门城市，查看景点信息',
               left: '48%',
               top: '4%',
               textAlign: 'center',
               textStyle: {
-                color: '#fff'
+                color: 'rgba(255, 255, 255, 0.808)',
+                fontWeight: '200'
               }
             },
           tooltip: {

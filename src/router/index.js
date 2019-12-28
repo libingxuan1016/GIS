@@ -3,6 +3,7 @@ import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
 import Index from '@/components/Index'
 import Path from '@/components/Path'
+import Welcome from '@/components/Welcome'
 
 Vue.use(Router)
 
@@ -11,7 +12,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Index',
+      name: 'Welcome',
+      component: Welcome
+    },
+    {
+      path: '/show',
+      name: 'Show',
       component: Index
     },
     {

@@ -1,23 +1,43 @@
 <template lang="pug">
 .header-container
-  img(src="../assets/title.png")
-  div.li
+  .logo-container
+    img(src="../assets/logo.png")
+    h1 灾害数据可视化和景点查询
+  div.li1.li
     li.link
-      router-link(to="/", exact, tag="li") 灾害查询
-  div.li.li1
+      router-link(to="/", exact, tag="li") 首页
+  div.li2.li
     li.link
-      router-link(to="/path", tag="li") 出行路径
+      router-link(to="/show", exact, tag="li") 灾害展示
+  div.li.li3
+    li.link
+      router-link(to="/path", tag="li") 景点查询
   //- li.link
   //-   router-link(to="/", tag="li") 功能3
 
 </template>
 
 <style lang="scss" scoped>
+.logo-container {
+  display: inline-block;
+    margin: 5px;
+}
+h1 {
+    margin: 0;
+    color: white;
+    font-size: 25px;
+    font-weight: 400;
+    /* padding-top: 15px; */
+    /* padding-left: 8px; */
+    display: inline-block;
+    position: absolute;
+    left: 40px;
+    top: 15px;
+}
 img{
-  width: 250px;
-  top: 10px;
-  position:absolute;
-  left:40%;
+  width: 30px;
+    position: absolute;
+    top: 15px;
 }
 li {
   list-style: none;
@@ -26,15 +46,21 @@ li {
 }
 .li {
     margin-left:20px;
-    display: inline-block;
     position: absolute;
-    bottom:10px;
+    bottom:17px;
+    cursor: pointer;
 }
 li:hover,li:visited{
   color:'#fff';
 }
 .li1{
-  left:100px;
+  left:400px;
+}
+.li2 {
+  left:480px;
+}
+.li3 {
+  left:600px;
 }
 .title {
   display: inline-block;
