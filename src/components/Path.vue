@@ -54,7 +54,7 @@ div
 </template>
 
 <script>
-import { MP } from '../assets/build-map'
+// import { MP } from '../assets/build-map'
 require('echarts/extension/bmap/bmap')
 export default {
   data () {

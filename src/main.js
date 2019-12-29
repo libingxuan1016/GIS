@@ -14,7 +14,7 @@ Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-axios.defaults.baseURL = 'http://172.23.142.196/gisPro/public/api/'
+axios.defaults.baseURL = 'http://172.28.246.230/gisPro/public/api/'
 
 Vue.use(BaiduMap, {
   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
