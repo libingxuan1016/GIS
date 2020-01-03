@@ -97,7 +97,7 @@ div
 </template>
 
 <script>
-import { MP } from '../assets/build-map'
+// import { MP } from '../assets/build-map'
 var k = [{
   value: 'AQI',
   name: 'AQI'
@@ -482,8 +482,9 @@ export default {
             },
             bmap: {
               center: this.mapcenter,
+              navigationControl: true,
               zoom: 5,
-              roam: false,
+              roam: true,
               mapStyle: {
                 style: 'dark'
               }
@@ -741,7 +742,7 @@ export default {
           bmap: {
             center: [115.114129, 37.550339],
             zoom: 5,
-            roam: false,
+            roam: true,
             mapStyle: {
               style: 'dark'
             }
@@ -1040,7 +1041,7 @@ export default {
           bmap: {
             center: [120, 30],
             zoom: 5,
-            roam: false,
+            roam: true,
             mapStyle: {
               style: 'dark'
             }
